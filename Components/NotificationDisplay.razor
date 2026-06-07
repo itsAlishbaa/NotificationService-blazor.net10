@@ -1,19 +1,24 @@
-﻿@inject NotificationService NotifyService
+﻿@using Q6
+@inject NotificationService NotifyService
+@implements IDisposable
 @rendermode InteractiveServer
 
 <div class="premium-dark-card">
     <div class="card-header-block">
         <h2 class="terminal-title">Live Notification Center</h2>
-        <p class="terminal-subtitle">Current Display Mode: @NotifyService.GetCurrentStyle()</p>
+        <div class="display-metric-box" style="margin-top: 15px; padding: 10px;">
+            <span class="metric-label">Display Mode</span>
+            <span class="status-badge status-online">@NotifyService.GetCurrentStyle()</span>
+        </div>
     </div>
 
-    <div class="action-grid" style="margin-bottom: 20px;">
+    <div class="action-grid">
         <button class="action-btn-main btn-glow-purple" @onclick="LoadNotifications">
             Fetch Latest Notifications
         </button>
     </div>
 
-    <div class="profile-stream-section">
+    <div class="profile-stream-section" style="margin-top: 24px;">
         @if (notifications == null)
         {
             <p class="profile-meta-warn">No notifications loaded yet. Click the fetch button.</p>
@@ -24,23 +29,23 @@
         }
         else
         {
-            <div class="form-container" style="width: 100%;">
+            <div class="form-container">
                 @foreach (var note in notifications)
                 {
                     @if (NotifyService.GetCurrentStyle() == "Compact")
                     {
-                        <div class="display-metric-box" style="padding: 10px; margin-bottom: 10px; background: #1a1333;">
-                            <span class="status-badge status-online" style="font-size: 1rem; text-align: left;">
+                        <div class="display-metric-box" style="padding: 12px; margin-bottom: 8px; border-color: rgba(16, 185, 129, 0.3);">
+                            <span style="color: #10b981; font-weight: 700; font-size: 0.9rem; display: block; text-align: left;">
                                 ⚠️ @note.Split(':')[0]
                             </span>
                         </div>
                     }
                     else
                     {
-                        <div class="warning-alert-box" style="margin-bottom: 12px; border: 1px solid rgba(217, 70, 239, 0.3);">
-                            <strong style="color: #d946ef; display: block; margin-bottom: 4px;">SYSTEM LOG</strong>
-                            <p>@note</p>
-                            <span style="font-size: 0.75rem; color: #a855f7; display: block; margin-top: 6px;">Timestamp: Live Sync Active</span>
+                        <div class="warning-alert-box">
+                            <strong style="color: #d946ef; display: block; font-size: 0.85rem; margin-bottom: 4px;">SYSTEM LOG</strong>
+                            <p style="margin: 0; color: #e2e8f0; font-size: 0.9rem; line-height: 1.4;">@note</p>
+                            <span style="font-size: 0.7rem; color: #a855f7; display: block; margin-top: 6px;">Timestamp: Live Sync Active</span>
                         </div>
                     }
                 }
@@ -52,8 +57,25 @@
 @code {
     private List<string>? notifications;
 
+    protected override void OnInitialized()
+    {
+        // Subscribe to service state changes
+        NotifyService.OnStateChanged += RefreshUI;
+    }
+
     private async Task LoadNotifications()
     {
         notifications = await NotifyService.GetNotificationsAsync();
+    }
+
+    private void RefreshUI()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        // Unsubscribe to protect memory leaks
+        NotifyService.OnStateChanged -= RefreshUI;
     }
 }
