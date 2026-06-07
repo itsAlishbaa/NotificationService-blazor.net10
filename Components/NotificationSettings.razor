@@ -1,4 +1,7 @@
-﻿@inject NotificationConfig Config
+﻿@page "/notification-settings"
+@using Q6
+@inject NotificationConfig Config
+@rendermode InteractiveServer
 
 <div class="premium-dark-card" style="margin-bottom: 24px;">
     <div class="card-header-block">
@@ -9,11 +12,13 @@
     <div class="form-container">
         <div class="input-group-block">
             <label>Default Number of Notifications</label>
-            <input type="number" class="custom-terminal-input" @bind-value="Config.DefaultNumberOfNotifications" min="1" max="10" />
+            @* Blazor inputs ke sath standard binding hamesha sirf @bind se hoti hai *@
+            <input type="number" class="custom-terminal-input" @bind="Config.DefaultNumberOfNotifications" min="1" max="10" />
         </div>
 
         <div class="input-group-block">
             <label>Notification Style</label>
+            @* Dropdown selection binding ko bhi fix kar diya hai *@
             <select class="custom-terminal-input" @bind="Config.NotificationStyle">
                 <option value="Compact">Compact View</option>
                 <option value="Detailed">Detailed View</option>

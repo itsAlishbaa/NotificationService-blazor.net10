@@ -1,4 +1,4 @@
-﻿using Q6.Components.Pages;
+﻿using Q6;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
