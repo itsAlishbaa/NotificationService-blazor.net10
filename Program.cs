@@ -10,7 +10,7 @@ builder.Services.AddRazorComponents()
 builder.Services.AddSingleton<Q6.NotificationConfig>();
 
 // Register NotificationService as Transient or Scoped
-builder.Services.AddScoped<NotificationService>();
+builder.Services.AddScoped<Q6.NotificationService>();
 
 var app = builder.Build();
 
