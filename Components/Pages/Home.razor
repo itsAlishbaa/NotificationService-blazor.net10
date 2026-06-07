@@ -1,7 +1,10 @@
 ﻿@page "/"
+@rendermode InteractiveServer
 
-<PageTitle>Home</PageTitle>
+<div class="dashboard-viewport" style="flex-direction: column; gap: 24px; justify-content: flex-start; overflow-y: auto;">
+    
+    <NotificationSettings />
 
-<h1>Hello, world!</h1>
+    <NotificationDisplay />
 
-Welcome to your new app.
+</div>
