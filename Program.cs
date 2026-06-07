@@ -1,10 +1,16 @@
 using Q6.Components;
+using Q6.Components.Pages;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+// Register NotificationConfig as a Singleton
+builder.Services.AddSingleton<NotificationConfig>();
+
+// Register NotificationService as Transient or Scoped
+builder.Services.AddScoped<NotificationService>();
 
 var app = builder.Build();
 
