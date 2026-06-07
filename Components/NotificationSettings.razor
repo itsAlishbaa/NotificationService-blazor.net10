@@ -1,5 +1,23 @@
-﻿<h3>NotificationSettings</h3>
+﻿@inject NotificationConfig Config
 
-@code {
+<div class="premium-dark-card" style="margin-bottom: 24px;">
+    <div class="card-header-block">
+        <h2 class="terminal-title">Notification Settings</h2>
+        <p class="terminal-subtitle">Modify service configuration dynamically</p>
+    </div>
 
-}
+    <div class="form-container">
+        <div class="input-group-block">
+            <label>Default Number of Notifications</label>
+            <input type="number" class="custom-terminal-input" @bind-value="Config.DefaultNumberOfNotifications" min="1" max="10" />
+        </div>
+
+        <div class="input-group-block">
+            <label>Notification Style</label>
+            <select class="custom-terminal-input" @bind="Config.NotificationStyle">
+                <option value="Compact">Compact View</option>
+                <option value="Detailed">Detailed View</option>
+            </select>
+        </div>
+    </div>
+</div>
